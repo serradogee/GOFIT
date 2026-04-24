@@ -1,3 +1,17 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;700;900&family=Syne:wght@800&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  body {
+    @apply font-['Outfit'] bg-[#FAFAFA] text-slate-900;
+  }
+}
+
+.logo-font {
+  font-family: 'Syne', sans-serif;
+  letter-spacing: -0.05em;
+}
+
