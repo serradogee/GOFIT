@@ -17,11 +17,11 @@ Este documento representa la estructura de nuestro tablero de Trello para el des
 A continuación se detallan las tarjetas que deben crearse en Trello, divididas en sus tareas técnicas:
 
 ### Tarjeta 1: Configuración Inicial del Proyecto
-**Columna Actual:** Todo
-*   [ ] Inicializar proyecto con Vite + React + TypeScript.
-*   [ ] Configurar Tailwind CSS para los estilos.
-*   [ ] Estructurar carpetas (components, pages, hooks, data).
-*   [ ] Crear repositorio y subir el código base (Done).
+**Columna Actual:** Done
+*   [x] Inicializar proyecto con Vite + React + TypeScript.
+*   [x] Configurar Tailwind CSS para los estilos.
+*   [x] Estructurar carpetas (components, pages, hooks, data, etc.).
+*   [x] Crear repositorio y subir el código base.
 
 ### Tarjeta 2: Generador de Datos Simulados (Mock API)
 **Columna Actual:** Todo
