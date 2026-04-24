@@ -4,10 +4,10 @@ const Header = () => {
   const navigate = useNavigate();
 
   return (
-    <header className="bg-black py-8 px-6 flex justify-center items-center sticky top-0 z-50 border-b border-zinc-900">
+    <header className="glass-header py-6 px-6 flex justify-center items-center">
       <h1 
         onClick={() => navigate('/')}
-        className="logo-font text-5xl font-black text-fitness-red cursor-pointer tracking-tighter uppercase italic"
+        className="logo-font text-4xl font-black text-red-500 cursor-pointer tracking-tight uppercase italic"
       >
         GoFit
       </h1>
