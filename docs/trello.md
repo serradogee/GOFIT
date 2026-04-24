@@ -37,10 +37,10 @@ A continuación se detallan las tarjetas que deben crearse en Trello, divididas 
 *   [ ] Implementar redirección automática al Dashboard si el usuario ya está registrado.
 
 ### Tarjeta 4: Vista Diaria (Dashboard)
-**Columna Actual:** Todo
-*   [ ] Maquetar el Layout principal (Header, Fecha de hoy).
-*   [ ] Crear componente `DietSection` para mostrar las comidas del día.
-*   [ ] Crear componente `WorkoutSection` para mostrar la rutina del gimnasio.
+**Columna Actual:** In Progress
+*   [x] Maquetar el Layout principal (Header, Fecha de hoy).
+*   [x] Crear componente `DietSection` para mostrar las comidas del día.
+*   [x] Crear componente `WorkoutSection` para mostrar la rutina del gimnasio.
 *   [ ] Conectar la vista con los datos del `localStorage` y los JSONs.
 
 ### Tarjeta 5: Sistema de Check-in y Progreso
