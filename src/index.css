@@ -27,3 +27,17 @@
   @apply shadow-[0_0_20px_rgba(239,68,68,0.2)];
 }
 
+@layer components {
+  .app-shell {
+    @apply min-h-screen bg-black text-white font-['Inter'] selection:bg-red-500/30;
+  }
+
+  .app-container {
+    @apply w-full max-w-5xl mx-auto px-4;
+  }
+
+  .page-center {
+    @apply min-h-[calc(100vh-88px)] flex flex-col justify-center items-center w-full;
+  }
+}
+

@@ -7,7 +7,7 @@ const DaySelection = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="p-6 min-h-[calc(100vh-88px)] flex flex-col items-center justify-center w-full">
+    <div className="page-center p-6">
       <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="text-center mb-10 w-full">
         <p className="text-red-500 text-[10px] font-black uppercase tracking-[0.4em] mb-2">Seleccion de hoy</p>
         <h2 className="text-5xl font-black uppercase italic tracking-tighter text-white">{dayId}</h2>

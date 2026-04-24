@@ -17,8 +17,8 @@ const Home = () => {
   const adjustedToday = todayIndex === 0 ? 6 : todayIndex - 1;
 
   return (
-    <div className="min-h-screen flex flex-col justify-center items-center w-full max-w-5xl px-4 mx-auto">
-      <div className="mb-10 text-center space-y-2 w-full">
+    <div className="page-center">
+      <div className="mb-10 text-center space-y-2">
         <motion.h2 
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -36,8 +36,9 @@ const Home = () => {
         </motion.p>
       </div>
 
-      <div className="grid grid-cols-2 md:grid-cols-3 gap-4 justify-center place-items-center w-full">
-        {days.map((day, index) => {
+      <div className="w-full flex justify-center">
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-4 place-items-center w-fit mx-auto">
+          {days.map((day, index) => {
           const isToday = index === adjustedToday;
           
           return (
@@ -78,6 +79,7 @@ const Home = () => {
             </motion.button>
           );
         })}
+        </div>
       </div>
 
     </div>
