@@ -1,98 +1,253 @@
-# Arquitectura y Diseño del Sistema: GOFIT
+# Arquitectura y Diseno del Sistema: GOFIT
 
-## 1. División de Responsabilidades (Frontend vs Backend)
+## 1) Estructura de componentes principales
 
-**Frontend (React + Vite):**
-- **Responsabilidad:** Interfaz de usuario (UI), experiencia interactiva (UX) y presentación de datos.
-- **Estado:** Mantiene el estado local (formularios) y global de sesión (usuario logueado, preferencias de UI).
-- **Comunicación:** Realiza peticiones asíncronas a la API para enviar o pedir datos.
-- **Regla de oro:** *No debe realizar cálculos de lógica de negocio pesados (como calcular el TDEE) ni almacenar información sensible en texto plano.*
+La app actual es un SPA con React Router y un layout simple (`Header` + `main`) en `App`.
 
-**Backend (Node.js + Express):**
-- **Responsabilidad:** Lógica de negocio core (algoritmo generador de rutinas/dietas).
-- **Seguridad:** Valida los datos enviados por el usuario antes de procesarlos.
-- **Datos:** Interactúa con la base de datos para guardar progresos y perfiles.
-- **Autenticación:** Gestión de tokens (JWT) y autorización.
+### Arbol de alto nivel
 
-## 2. Componentes Principales y Reutilizables
+- `App`
+  - `Header`
+  - `Routes`
+    - `Home` (`/`)
+    - `DaySelection` (`/day/:dayId`)
+    - `DietView` (`/day/:dayId/diet`)
+    - `WorkoutView` (`/day/:dayId/exercise`)
 
-**Principales (Vistas/Páginas completas):**
-- `Onboarding`: Flujo de pasos (wizard) para recoger datos físicos del usuario.
-- `Dashboard`: Vista general donde convergen el resumen de dieta y rutina del día actual.
-- `WorkoutView`: Modo inmersivo/pantalla completa para interactuar en tiempo real en el gimnasio.
+### Responsabilidad por pagina
 
-**Reutilizables (UI Kit):**
-- `Card`: Contenedor base con estilos premium (glassmorphism, bordes suaves, sombras).
-- `Button`: Botón estandarizado con variantes (Primary, Secondary, Outline, Danger).
-- `InputField` / `SelectField`: Componentes de formulario accesibles con manejo visual de errores.
-- `ProgressBar`: Para indicar el avance en el onboarding o porcentaje de la rutina completada.
+- `Home`: calendario semanal y punto de entrada al flujo diario.
+- `DaySelection`: selector de modulo para un dia (`Dieta` o `Ejercicio`).
+- `DietView`: visualizacion del plan de comidas del dia.
+- `WorkoutView`: visualizacion y seguimiento de ejercicios del dia.
 
-## 3. Gestión de Estado (State Management)
-- **Estado Local:** `useState` para controlar inputs, modales abiertos/cerrados, o pestañas.
-- **Estado Global:** Context API (`UserContext` / `ThemeContext`) para datos transversales. Evitamos Redux inicialmente para mantener el MVP ágil y ligero.
-- **Estado de Servidor:** Un Custom Hook (`useFetch` o `useGenerator`) se encargará de guardar temporalmente los datos que vengan de la API.
+## 2) Componentes reutilizables (decision)
 
-## 4. Diseño de API REST (Endpoints)
+Para evitar duplicacion y facilitar crecimiento, se definen estos componentes compartidos:
 
-Todas las rutas tendrán el prefijo base `/api/v1`.
+- `PageHeader`: cabecera de pagina (titulo, subtitulo y acento visual).
+- `PrimaryActionButton`: CTA principal con estados (`idle`, `loading`, `disabled`).
+- `FeatureCard`: tarjeta clicable para modulos (ejercicio/dieta).
+- `SectionList`: lista tipada para bloques repetidos (comidas, ejercicios, etc.).
+- `BackButton`: boton de retorno con comportamiento consistente.
+- `StatusBadge`: etiqueta para estado (`hoy`, `completado`, `pendiente`).
 
-### A. Endpoint: Generar Rutina
-- **Ruta:** `POST /api/v1/routines/generate`
-- **Responsabilidad:** Recibe el perfil físico y devuelve un plan estructurado.
+Regla: las paginas orquestan datos y navegacion; los componentes reutilizables se enfocan en presentacion y eventos.
 
-**Request Body (Frontend -> Backend):**
+## 3) Gestion de estado de la aplicacion
+
+Se usara una estrategia por capas:
+
+- **Estado local (`useState`)** para UI efimera:
+  - filtros activos
+  - modal abierto/cerrado
+  - seleccion temporal de elementos
+- **Estado global cliente (`Context`)** para datos transversales:
+  - perfil activo
+  - dia seleccionado
+  - preferencias de interfaz
+- **Estado servidor (React Query recomendado)** para cache y sincronizacion:
+  - rutinas
+  - planes de dieta
+  - progreso del dia
+
+### Estructura sugerida
+
+- `AppContext`: sesion liviana y preferencias.
+- `useWorkout(dayId)`: query para obtener rutina por dia.
+- `useDiet(dayId)`: query para obtener dieta por dia.
+- `useCompleteExercise()`: mutacion para marcar series/ejercicios.
+- `useCompleteMeal()`: mutacion para marcar comidas.
+
+## 4) Diseno backend/API REST
+
+Prefijo base: `/api/v1`
+
+Formato de respuesta estandar:
+
 ```json
 {
-  "age": 28,
-  "experienceLevel": "intermediate",
-  "goal": "hypertrophy",
-  "daysPerWeek": 4
+  "success": true,
+  "data": {},
+  "meta": {},
+  "error": null
 }
 ```
 
-**Response (200 OK):**
+Formato de error:
+
+```json
+{
+  "success": false,
+  "data": null,
+  "meta": {},
+  "error": {
+    "code": "VALIDATION_ERROR",
+    "message": "Campo goal no valido",
+    "details": []
+  }
+}
+```
+
+### Recursos y contratos
+
+#### 4.1 Perfil de usuario
+
+- `GET /api/v1/profile`
+  - Devuelve perfil activo.
+- `PUT /api/v1/profile`
+  - Actualiza edad, altura, peso, objetivo, experiencia.
+
+`GET /profile` (200):
+
+```json
+{
+  "success": true,
+  "data": {
+    "id": "usr_01",
+    "name": "Sergio",
+    "age": 28,
+    "heightCm": 180,
+    "weightKg": 75,
+    "goal": "hypertrophy",
+    "experienceLevel": "intermediate"
+  },
+  "meta": {},
+  "error": null
+}
+```
+
+#### 4.2 Rutinas
+
+- `GET /api/v1/routines?day=lunes`
+  - Obtiene la rutina de un dia.
+- `POST /api/v1/routines/generate`
+  - Genera/regenara rutina semanal en base al perfil.
+
+`GET /routines?day=lunes` (200):
+
 ```json
 {
   "success": true,
   "data": {
     "routineId": "r_12345",
-    "days": [
+    "day": "lunes",
+    "exercises": [
       {
-        "dayName": "Día 1: Torso",
-        "exercises": [
-          { "name": "Press de Banca", "sets": 4, "reps": "8-10", "rest": "90s" },
-          { "name": "Dominadas", "sets": 3, "reps": "Al fallo", "rest": "90s" }
-        ]
+        "id": "ex_01",
+        "name": "Press de Banca",
+        "muscle": "Pecho",
+        "sets": 4,
+        "reps": "8-10",
+        "restSec": 90,
+        "completed": false
       }
     ]
-  }
+  },
+  "meta": {},
+  "error": null
 }
 ```
 
-### B. Endpoint: Generar Dieta
-- **Ruta:** `POST /api/v1/diets/generate`
-- **Responsabilidad:** Calcula calorías y macros basándose en el peso y objetivo.
+#### 4.3 Dieta
 
-**Request Body:**
-```json
-{
-  "weightKg": 75,
-  "heightCm": 180,
-  "gender": "male",
-  "goal": "fat_loss"
-}
-```
+- `GET /api/v1/diets?day=lunes`
+  - Obtiene dieta del dia.
+- `POST /api/v1/diets/generate`
+  - Genera dieta semanal.
 
-**Response (200 OK):**
+`GET /diets?day=lunes` (200):
+
 ```json
 {
   "success": true,
   "data": {
+    "dietId": "d_100",
+    "day": "lunes",
     "targetCalories": 2200,
     "macros": { "protein": 160, "carbs": 240, "fats": 66 },
     "meals": [
-      { "name": "Desayuno", "food": "Avena con proteína y arándanos", "calories": 400 }
+      {
+        "id": "meal_01",
+        "title": "DESAYUNO",
+        "time": "08:00",
+        "items": ["Tortilla de claras", "Avena con canela"],
+        "completed": false
+      }
     ]
-  }
+  },
+  "meta": {},
+  "error": null
 }
 ```
+
+#### 4.4 Progreso diario
+
+- `PATCH /api/v1/progress/exercises/:exerciseId`
+  - Marca ejercicio como completado/no completado.
+- `PATCH /api/v1/progress/meals/:mealId`
+  - Marca comida como completada/no completada.
+- `GET /api/v1/progress?day=lunes`
+  - Devuelve estado agregado del dia.
+
+Request ejemplo (`PATCH /progress/exercises/ex_01`):
+
+```json
+{
+  "completed": true
+}
+```
+
+Response (200):
+
+```json
+{
+  "success": true,
+  "data": {
+    "exerciseId": "ex_01",
+    "completed": true,
+    "updatedAt": "2026-04-24T17:10:00.000Z"
+  },
+  "meta": {},
+  "error": null
+}
+```
+
+## 5) Persistencia: servidor vs cliente
+
+### Persistir en servidor (fuente de verdad)
+
+- perfil de usuario
+- rutina generada (por dia/semana)
+- dieta generada (por dia/semana)
+- progreso de ejercicios/comidas
+- historico resumido (racha, adherencia, fecha de ultima sesion)
+
+### Solo cliente (estado efimero/UI)
+
+- pagina activa y estados visuales temporales
+- filtros y orden de listas
+- estados de carga/transicion
+- cache temporal de queries (gestionada por libreria de data fetching)
+
+Nota: si se requiere modo offline, se puede guardar snapshot en `localStorage` con TTL corto, sincronizando al reconectar.
+
+## 6) Diagrama simple de flujo de datos
+
+```mermaid
+flowchart LR
+  A[Frontend React<br/>Home/DaySelection/DietView/WorkoutView] -->|GET/POST/PATCH JSON| B[/API REST<br/>/api/v1/.../]
+  B --> C[Backend Node/Express]
+  C --> D[(Base de datos)]
+  D --> C
+  C -->|Respuesta normalizada| B
+  B -->|data + meta + error| A
+```
+
+## 7) Decisiones de arquitectura (resumen)
+
+- Arquitectura cliente-servidor con API REST versionada (`/api/v1`) para facilitar evolucion.
+- Componentes de UI reutilizables para mantener consistencia y bajar costo de cambios.
+- Estado separado en tres niveles: local, global y servidor.
+- Backend como duenio de la logica de negocio y persistencia.
+- Contratos JSON estandar para facilitar manejo de errores y observabilidad.
