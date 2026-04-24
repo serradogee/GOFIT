@@ -6,57 +6,44 @@ const DaySelection = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="p-6 h-[calc(100vh-140px)] flex flex-col items-center justify-center max-w-xl mx-auto">
-      <motion.div 
-        initial={{ opacity: 0, scale: 0.9 }}
-        animate={{ opacity: 1, scale: 1 }}
-        className="text-center mb-16"
-      >
-        <p className="text-red-500 text-[10px] font-black uppercase tracking-[0.4em] mb-2">Programación de hoy</p>
-        <h2 className="text-6xl font-black italic uppercase tracking-tighter text-white">
+    <div className="min-h-[calc(100vh-64px)] flex flex-col bg-black overflow-hidden">
+      <div className="p-8 pt-12 border-b border-zinc-900 bg-zinc-900/50">
+        <h2 className="text-6xl font-black italic uppercase tracking-tighter text-white leading-none">
           {dayId}
         </h2>
-      </motion.div>
+        <div className="h-1 w-20 mad-orange mt-4" />
+      </div>
 
-      <div className="flex flex-col sm:flex-row gap-6 w-full h-[60vh] max-h-[500px]">
+      <div className="flex-1 flex flex-col sm:flex-row divide-y sm:divide-y-0 sm:divide-x divide-zinc-900">
         <motion.button
-          whileHover={{ scale: 1.02 }}
+          whileHover={{ backgroundColor: '#FF4B00', color: '#000' }}
           whileTap={{ scale: 0.95 }}
-          initial={{ opacity: 0, x: -30 }}
-          animate={{ opacity: 1, x: 0 }}
           onClick={() => navigate(`/day/${dayId}/exercise`)}
-          className="premium-card flex-1 flex flex-col items-center justify-center gap-6 group"
+          className="flex-1 flex flex-col items-center justify-center p-12 transition-all group border-b sm:border-b-0 border-zinc-900"
         >
-          <div className="w-24 h-24 bg-red-500/10 rounded-3xl flex items-center justify-center text-red-500 group-hover:bg-red-500 group-hover:text-white transition-all shadow-lg">
-            <span className="text-5xl">💪</span>
-          </div>
-          <span className="text-2xl font-black uppercase italic tracking-tight">Ejercicio</span>
+          <span className="text-8xl mb-4 grayscale group-hover:grayscale-0 transition-all">💪</span>
+          <span className="text-4xl font-black uppercase tracking-tighter italic">ENTRENO</span>
+          <p className="mt-2 text-zinc-600 group-hover:text-black font-black uppercase text-[10px] tracking-[0.3em]">Potencia & Fuerza</p>
         </motion.button>
 
         <motion.button
-          whileHover={{ scale: 1.02 }}
+          whileHover={{ backgroundColor: '#FF4B00', color: '#000' }}
           whileTap={{ scale: 0.95 }}
-          initial={{ opacity: 0, x: 30 }}
-          animate={{ opacity: 1, x: 0 }}
           onClick={() => navigate(`/day/${dayId}/diet`)}
-          className="premium-card flex-1 flex flex-col items-center justify-center gap-6 group"
+          className="flex-1 flex flex-col items-center justify-center p-12 transition-all group"
         >
-          <div className="w-24 h-24 bg-red-500/10 rounded-3xl flex items-center justify-center text-red-500 group-hover:bg-red-500 group-hover:text-white transition-all shadow-lg">
-            <span className="text-5xl">🥗</span>
-          </div>
-          <span className="text-2xl font-black uppercase italic tracking-tight">Dieta</span>
+          <span className="text-8xl mb-4 grayscale group-hover:grayscale-0 transition-all">🥗</span>
+          <span className="text-4xl font-black uppercase tracking-tighter italic">DIETA</span>
+          <p className="mt-2 text-zinc-600 group-hover:text-black font-black uppercase text-[10px] tracking-[0.3em]">Carga de Energía</p>
         </motion.button>
       </div>
 
-      <motion.button 
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0.5 }}
+      <button 
         onClick={() => navigate('/')}
-        className="mt-12 py-3 px-8 text-slate-500 font-bold uppercase tracking-widest text-xs hover:text-white transition-colors"
+        className="py-6 border-t border-zinc-900 bg-zinc-900 text-zinc-500 font-black uppercase tracking-widest text-[10px] hover:text-white transition-colors"
       >
-        ← Volver al inicio
-      </motion.button>
+        ← VOLVER AL CALENDARIO
+      </button>
     </div>
   );
 };

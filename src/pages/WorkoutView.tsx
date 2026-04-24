@@ -14,54 +14,54 @@ const WorkoutView = () => {
   ];
 
   return (
-    <div className="p-6 max-w-xl mx-auto pb-24 min-h-screen">
-      <div className="flex flex-col items-center mb-12">
-        <p className="text-red-500 text-[10px] font-black uppercase tracking-[0.4em] mb-2">{dayId}</p>
-        <h2 className="text-5xl font-black italic uppercase tracking-tight text-white">Rutina</h2>
+    <div className="pb-24 min-h-screen bg-black">
+      <div className="p-8 bg-zinc-900 border-b border-zinc-800">
+        <h2 className="text-4xl font-black italic uppercase tracking-tighter text-white leading-none">RUTINA <span className="text-mad-orange">DAILY</span></h2>
+        <p className="text-zinc-500 text-[10px] font-black uppercase tracking-widest mt-2">{dayId}</p>
       </div>
 
-      <div className="flex flex-col gap-4">
+      <div className="flex flex-col">
         {exercises.map((ex, index) => (
           <motion.div
             key={index}
-            initial={{ opacity: 0, x: 20 }}
+            initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: index * 0.05 }}
-            className="premium-card p-6 flex justify-between items-center group"
+            className="p-8 border-b border-zinc-900 flex flex-col sm:flex-row sm:items-center justify-between group gap-4"
           >
-            <div>
-              <p className="text-red-500 text-[8px] font-black uppercase tracking-[0.2em] mb-1">{ex.muscle}</p>
-              <h3 className="text-xl font-black uppercase italic tracking-tight text-white transition-colors group-hover:text-red-500">{ex.name}</h3>
+            <div className="flex items-center gap-6">
+              <span className="text-2xl font-black italic text-zinc-800 group-hover:text-mad-orange transition-colors">0{index + 1}</span>
+              <div>
+                <p className="text-mad-orange text-[8px] font-black uppercase tracking-[0.3em] mb-1">{ex.muscle}</p>
+                <h3 className="text-2xl font-black uppercase tracking-tighter text-white">{ex.name}</h3>
+              </div>
             </div>
             
-            <div className="flex items-center gap-4">
-              <div className="flex flex-col items-center">
-                <span className="text-[8px] font-black uppercase text-slate-500 tracking-tighter">Sets</span>
-                <span className="text-2xl font-black italic text-white">{ex.sets}</span>
+            <div className="flex items-center gap-10">
+              <div className="flex flex-col">
+                <span className="text-[10px] font-black uppercase text-zinc-600 tracking-tighter">Series</span>
+                <span className="text-3xl font-black italic text-white">{ex.sets}</span>
               </div>
-              <div className="h-6 w-[1px] bg-slate-800" />
-              <div className="flex flex-col items-center">
-                <span className="text-[8px] font-black uppercase text-slate-500 tracking-tighter">Reps</span>
-                <span className="text-2xl font-black italic text-white">{ex.reps}</span>
+              <div className="flex flex-col">
+                <span className="text-[10px] font-black uppercase text-zinc-600 tracking-tighter">Reps</span>
+                <span className="text-3xl font-black italic text-white">{ex.reps}</span>
               </div>
+              <button className="w-10 h-10 border border-zinc-800 flex items-center justify-center hover:bg-mad-orange hover:border-mad-orange hover:text-black transition-all">
+                ✓
+              </button>
             </div>
           </motion.div>
         ))}
       </div>
 
-      <motion.button 
-        whileTap={{ scale: 0.95 }}
-        className="w-full mt-12 bg-red-500 py-5 rounded-2xl font-black italic uppercase tracking-widest text-sm shadow-[0_10px_30px_rgba(239,68,68,0.3)] hover:bg-red-600 transition-colors"
-      >
-        Finalizar Entrenamiento
-      </motion.button>
-
-      <button 
-        onClick={() => navigate(-1)}
-        className="w-full mt-6 py-4 text-slate-500 font-bold uppercase tracking-widest text-[10px] hover:text-white transition-colors"
-      >
-        ← Volver
-      </button>
+      <div className="p-8">
+        <motion.button 
+          whileTap={{ scale: 0.95 }}
+          className="w-full mad-orange text-black py-5 font-black uppercase tracking-[0.2em] text-lg shadow-[0_10px_30px_rgba(255,75,0,0.3)]"
+        >
+          COMPLETAR ENTRENAMIENTO
+        </motion.button>
+      </div>
     </div>
   );
 };

@@ -5,64 +5,58 @@ const DietView = () => {
   const { dayId } = useParams();
   const navigate = useNavigate();
 
-  const dietData = {
-    desayuno: { title: "Desayuno", items: ["Tortilla de claras", "Avena con canela", "Café solo"], emoji: "🍳", time: "08:00" },
-    comida: { title: "Comida", items: ["Pollo a la plancha", "Arroz integral", "Ensalada verde"], emoji: "🍗", time: "14:00" },
-    cena: { title: "Cena", items: ["Salmón al horno", "Espárragos", "Yogur griego"], emoji: "🐟", time: "21:00" }
-  };
+  const dietData = [
+    { title: "DESAYUNO", items: ["Tortilla de claras", "Avena con canela", "Café solo"], emoji: "🍳", time: "08:00" },
+    { title: "COMIDA", items: ["Pollo a la plancha", "Arroz integral", "Ensalada verde"], emoji: "🍗", time: "14:00" },
+    { title: "CENA", items: ["Salmón al horno", "Espárragos", "Yogur griego"], emoji: "🐟", time: "21:00" }
+  ];
 
   return (
-    <div className="p-6 max-w-xl mx-auto pb-24 min-h-screen">
-      <div className="flex flex-col items-center mb-12">
-        <p className="text-red-500 text-[10px] font-black uppercase tracking-[0.4em] mb-2">{dayId}</p>
-        <h2 className="text-5xl font-black italic uppercase tracking-tight text-white">Dieta</h2>
+    <div className="pb-24 min-h-screen bg-black">
+      <div className="p-8 bg-zinc-900 border-b border-zinc-800">
+        <h2 className="text-4xl font-black italic uppercase tracking-tighter text-white">PLAN NUTRICIÓN</h2>
+        <p className="text-mad-orange text-xs font-black uppercase tracking-widest">{dayId}</p>
       </div>
 
-      <div className="flex flex-col gap-6">
-        {Object.entries(dietData).map(([key, section], index) => (
+      <div className="flex flex-col">
+        {dietData.map((section, index) => (
           <motion.div
-            key={key}
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
+            key={index}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
             transition={{ delay: index * 0.1 }}
-            className="premium-card p-8 group relative overflow-hidden"
+            className="border-b border-zinc-900 p-8 flex flex-col sm:flex-row sm:items-center justify-between gap-6"
           >
-            {/* Decoration */}
-            <div className="absolute -top-4 -right-4 text-7xl opacity-5 grayscale group-hover:grayscale-0 group-hover:opacity-10 transition-all rotate-12">
-              {section.emoji}
-            </div>
-
-            <div className="relative z-10">
-              <div className="flex items-center justify-between mb-6">
-                <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 bg-red-500/10 rounded-2xl flex items-center justify-center text-2xl">
-                    {section.emoji}
-                  </div>
-                  <h3 className="text-2xl font-black uppercase italic tracking-tight text-white">{section.title}</h3>
-                </div>
-                <span className="text-[10px] font-black text-slate-500 bg-slate-950 px-3 py-1 rounded-full uppercase tracking-widest">{section.time}</span>
+            <div className="flex items-center gap-6">
+              <div className="w-16 h-16 bg-zinc-800 flex items-center justify-center text-4xl">
+                {section.emoji}
               </div>
-              
-              <ul className="space-y-4">
-                {section.items.map((item, i) => (
-                  <li key={i} className="flex items-center gap-4 text-slate-300 font-medium">
-                    <div className="w-1.5 h-1.5 bg-red-500 rounded-full shadow-[0_0_10px_#ef4444]" />
-                    {item}
-                  </li>
-                ))}
-              </ul>
+              <div>
+                <span className="text-[10px] font-black text-mad-orange uppercase tracking-[0.3em] mb-1 block">{section.time} AM/PM</span>
+                <h3 className="text-2xl font-black uppercase tracking-tighter text-white">{section.title}</h3>
+              </div>
             </div>
+            
+            <ul className="flex flex-wrap gap-2 sm:justify-end max-w-sm">
+              {section.items.map((item, i) => (
+                <li key={i} className="bg-zinc-900 px-3 py-1 text-xs font-black uppercase tracking-tight text-zinc-400 border border-zinc-800">
+                  {item}
+                </li>
+              ))}
+            </ul>
           </motion.div>
         ))}
       </div>
 
-      <motion.button 
-        whileTap={{ scale: 0.95 }}
-        onClick={() => navigate(-1)}
-        className="w-full mt-12 py-5 rounded-2xl font-black italic uppercase tracking-widest text-slate-500 border border-slate-800 hover:text-white hover:border-slate-700 transition-all"
-      >
-        Cerrar Plan
-      </motion.button>
+      <div className="p-8">
+        <motion.button 
+          whileTap={{ scale: 0.95 }}
+          onClick={() => navigate(-1)}
+          className="w-full mad-orange text-black py-4 font-black uppercase tracking-widest text-xs"
+        >
+          CERRAR PLAN
+        </motion.button>
+      </div>
     </div>
   );
 };

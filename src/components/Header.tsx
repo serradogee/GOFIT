@@ -4,13 +4,18 @@ const Header = () => {
   const navigate = useNavigate();
 
   return (
-    <header className="glass-header py-6 px-6 flex justify-center items-center">
-      <h1 
+    <header className="bg-black py-4 px-6 flex justify-between items-center border-b border-zinc-900 sticky top-0 z-50">
+      <div 
         onClick={() => navigate('/')}
-        className="logo-font text-4xl font-black text-red-500 cursor-pointer tracking-tight uppercase italic"
+        className="mad-orange px-4 py-1 cursor-pointer"
       >
-        GoFit
-      </h1>
+        <h1 className="logo-font text-2xl font-black text-black uppercase tracking-tighter">
+          GoFit
+        </h1>
+      </div>
+      <div className="w-8 h-8 rounded-full border-2 border-zinc-800 flex items-center justify-center">
+        <span className="text-zinc-600 text-xs">👤</span>
+      </div>
     </header>
   );
 };

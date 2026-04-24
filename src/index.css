@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Syne:wght@800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=Syne:wght@800&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -6,7 +6,11 @@
 
 @layer base {
   body {
-    @apply font-['Inter'] bg-slate-950 text-white antialiased selection:bg-red-500/30;
+    @apply font-['Inter'] bg-black text-white antialiased selection:bg-orange-600/30;
+    background-image: 
+      linear-gradient(rgba(26, 26, 26, 0.4) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(26, 26, 26, 0.4) 1px, transparent 1px);
+    background-size: 30px 30px;
   }
 }
 
@@ -15,15 +19,19 @@
   letter-spacing: -0.05em;
 }
 
-.glass-header {
-  @apply sticky top-0 z-50 backdrop-blur-md bg-slate-950/70 border-b border-slate-800/50;
+.mad-orange {
+  background-color: #FF4B00;
 }
 
-.premium-card {
-  @apply bg-slate-900/50 backdrop-blur-sm border border-slate-800/50 rounded-2xl transition-all duration-300 hover:scale-[1.02] hover:bg-slate-800/80 hover:border-slate-700 active:scale-95;
+.text-mad-orange {
+  color: #FF4B00;
 }
 
-.accent-glow {
-  @apply shadow-[0_0_20px_rgba(239,68,68,0.2)];
+.mad-card {
+  @apply bg-zinc-900 overflow-hidden rounded-md border border-zinc-800 transition-all duration-300 active:scale-95;
+}
+
+.mad-button-bar {
+  @apply mad-orange h-12 flex items-center justify-between px-4 mt-auto;
 }
 
