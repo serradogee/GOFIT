@@ -6,20 +6,26 @@
 
 @layer base {
   body {
-    @apply font-['Inter'] bg-black text-white;
+    @apply font-['Inter'] bg-black text-white antialiased selection:bg-red-500/30;
   }
 }
 
 .logo-font {
   font-family: 'Syne', sans-serif;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.05em;
 }
 
-.bg-fitness-red {
-  background-color: #ff0000;
+.fitness-gradient {
+  background: linear-gradient(135deg, #111 0%, #000 100%);
 }
 
-.text-fitness-red {
-  color: #ff0000;
+.active-glow {
+  box-shadow: 0 0 30px rgba(255, 0, 0, 0.3);
+}
+
+.glass-card {
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
