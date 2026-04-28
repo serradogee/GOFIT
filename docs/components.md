@@ -1,12 +1,12 @@
 # Catalogo de Componentes Reutilizables (GOFIT)
 
-Este documento describe los componentes reutilizables creados, sus props tipadas y su uso dentro de la app.
+Este documento describe los componentes reutilizables creados y su uso dentro de la app en JavaScript.
 
 ## 1) `PageHeader`
 
-- **Ruta:** `src/components/PageHeader.tsx`
+- **Ruta:** `src/components/PageHeader.jsx`
 - **Objetivo:** Unificar cabeceras de pantallas (`DietView`, `WorkoutView`, `DaySelection`).
-- **Props (TypeScript):**
+- **Props (JavaScript):**
   - `title: string`
   - `subtitle?: string`
   - `accent?: ReactNode`
@@ -14,9 +14,9 @@ Este documento describe los componentes reutilizables creados, sus props tipadas
 
 ## 2) `FeatureCard`
 
-- **Ruta:** `src/components/FeatureCard.tsx`
+- **Ruta:** `src/components/FeatureCard.jsx`
 - **Objetivo:** Tarjeta accionable reutilizable para navegacion de modulos.
-- **Props (TypeScript):**
+- **Props (JavaScript):**
   - `title: string`
   - `icon: ReactNode`
   - `watermark: string`
@@ -24,23 +24,23 @@ Este documento describe los componentes reutilizables creados, sus props tipadas
 - **Uso actual:** `DaySelection` para opciones de `Ejercicio` y `Dieta`.
 - **Estilos:** Tailwind + clase compartida `premium-card`.
 
-## 3) `DataListCard<T>`
+## 3) `DataListCard`
 
-- **Ruta:** `src/components/DataListCard.tsx`
-- **Objetivo:** Renderizar listas de entidades tipadas (ej. ejercicios) de forma configurable.
-- **Props (TypeScript genericas):**
-  - `items: T[]` con restriccion `T extends { id: string }`
-  - `columns: ListColumn<T>[]`
-  - `header: (item: T) => ReactNode`
-  - `actions?: (item: T) => ReactNode`
+- **Ruta:** `src/components/DataListCard.jsx`
+- **Objetivo:** Renderizar listas de entidades (ej. ejercicios) de forma configurable.
+- **Props (JavaScript):**
+  - `items: Array<{ id: string, ... }>`
+  - `columns: Array<{ label: string, render: (item) => ReactNode }>`
+  - `header: (item) => ReactNode`
+  - `actions?: (item) => ReactNode`
 - **Composicion:** el padre controla estructura visual de fila mediante `header` y `actions`.
 - **Uso actual:** `WorkoutView`.
 
 ## 4) `BaseModal`
 
-- **Ruta:** `src/components/BaseModal.tsx`
+- **Ruta:** `src/components/BaseModal.jsx`
 - **Objetivo:** Contenedor modal reutilizable para flujos de edicion o confirmacion.
-- **Props (TypeScript):**
+- **Props (JavaScript):**
   - `isOpen: boolean`
   - `title: string`
   - `onClose: () => void`
@@ -50,30 +50,25 @@ Este documento describe los componentes reutilizables creados, sus props tipadas
 
 ## 5) `ProfileForm`
 
-- **Ruta:** `src/components/ProfileForm.tsx`
-- **Objetivo:** Formulario tipado para editar perfil desde estado global.
-- **Props (TypeScript):**
-  - `profile: UserProfile`
-  - `onSubmit: (nextProfile: UserProfile) => void`
+- **Ruta:** `src/components/ProfileForm.jsx`
+- **Objetivo:** Formulario para editar perfil desde estado global.
+- **Props (JavaScript):**
+  - `profile: object`
+  - `onSubmit: (nextProfile) => void`
 - **Fuente de datos:** `AppStateContext` (estado global cliente).
 - **Estilos:** inputs y layout con Tailwind (grid, espaciado y estados hover).
 
-## 6) Tipos de dominio usados por componentes
+## 6) Estructuras de datos usadas por componentes
 
-- **Ruta:** `src/types/domain.ts`
-- **Tipos principales:**
-  - `UserProfile`
-  - `Exercise`
-  - `Meal`
-  - `Weekday`
-- **Motivo:** evitar objetos anonimos y asegurar contratos consistentes entre estado global, vistas y futuros endpoints API.
+- Los modelos (`profile`, `exercise`, `meal`) se manejan como objetos JavaScript.
+- Se mantienen contratos estables por convención en componentes y estado global.
 
 ## 7) Estado global para consumo de componentes
 
-- **Ruta:** `src/context/AppStateContext.tsx`
+- **Ruta:** `src/context/AppStateContext.jsx`
 - **API del contexto:**
   - `profile: UserProfile`
-  - `updateProfile: (nextProfile: UserProfile) => void`
+  - `updateProfile: (nextProfile) => void`
 - **Uso actual:**
   - `Header` consume `profile` para mostrar nombre.
   - `BaseModal + ProfileForm` permiten editar y guardar.
@@ -83,13 +78,13 @@ Este documento describe los componentes reutilizables creados, sus props tipadas
 - `DaySelection`:
   - usa `PageHeader` + `FeatureCard`.
 - `WorkoutView`:
-  - usa `PageHeader` + `DataListCard<Exercise>`.
+  - usa `PageHeader` + `DataListCard`.
 - `DietView`:
-  - usa `PageHeader` con datos tipados `Meal[]`.
+  - usa `PageHeader` con datos de comidas en arreglos de objetos.
 
 ## 9) Convenciones para nuevos componentes
 
-- Definir siempre interfaz/tipo de props.
-- Reusar tipos de `src/types/domain.ts` o crear tipos locales si son estrictamente de UI.
+- Definir contratos de props claros desde el componente.
+- Mantener estructuras de datos consistentes entre estado y vistas.
 - Priorizar composicion (`children`, `render props`) sobre variantes rigidas.
 - Mantener clases Tailwind legibles y coherentes con tema oscuro de GOFIT.

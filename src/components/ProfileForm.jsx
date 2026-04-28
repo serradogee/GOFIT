@@ -1,15 +1,9 @@
 import { useState } from 'react';
-import type { UserProfile } from '../types/domain';
 
-interface ProfileFormProps {
-  profile: UserProfile;
-  onSubmit: (nextProfile: UserProfile) => void;
-}
+const ProfileForm = ({ profile, onSubmit }) => {
+  const [draft, setDraft] = useState(profile);
 
-const ProfileForm = ({ profile, onSubmit }: ProfileFormProps) => {
-  const [draft, setDraft] = useState<UserProfile>(profile);
-
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (event) => {
     event.preventDefault();
     onSubmit(draft);
   };
@@ -48,7 +42,7 @@ const ProfileForm = ({ profile, onSubmit }: ProfileFormProps) => {
 
       <button
         type="submit"
-        className="w-full py-3 text-sm font-black uppercase tracking-[0.2em] bg-red-500 text-black rounded-xl hover:bg-red-400 transition-colors"
+        className="w-full py-4 text-sm font-black uppercase tracking-[0.3em] bg-amber-500 text-black rounded-[1.5rem] hover:bg-amber-400 transition-all shadow-[0_0_20px_rgba(251,191,36,0.2)]"
       >
         Guardar perfil
       </button>

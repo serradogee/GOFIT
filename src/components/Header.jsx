@@ -5,11 +5,14 @@ const Header = () => {
 
   return (
     <header className="glass-header w-full py-4 px-6 flex items-center justify-center">
-      <div 
+      <div
         onClick={() => navigate('/')}
         className="cursor-pointer text-center mx-auto"
       >
-        <h1 className="logo-font text-3xl font-black text-red-500 uppercase tracking-tighter italic">
+        <h1 
+          className="logo-font text-4xl font-black uppercase tracking-tighter italic"
+          style={{ color: '#3B82F6' }}
+        >
           GOFIT
         </h1>
       </div>

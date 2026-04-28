@@ -1,13 +1,4 @@
-import type { ReactNode } from 'react';
-
-interface BaseModalProps {
-  isOpen: boolean;
-  title: string;
-  onClose: () => void;
-  children: ReactNode;
-}
-
-const BaseModal = ({ isOpen, title, onClose, children }: BaseModalProps) => {
+const BaseModal = ({ isOpen, title, onClose, children }) => {
   if (!isOpen) return null;
 
   return (

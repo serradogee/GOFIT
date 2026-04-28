@@ -10,7 +10,7 @@ function App() {
     <Router>
       <div className="app-shell">
         <Header />
-        <main className="pb-10 w-full flex justify-center">
+        <main className="w-full">
           <div className="app-container">
             <Routes>
               <Route path="/" element={<Home />} />
